@@ -18,7 +18,7 @@
   # boot.loader.grub.efiInstallAsRemovable = true;
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+  boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
 
 
   # General Configuration
@@ -29,7 +29,7 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.ens3.useDHCP = true;
+  networking.interfaces.enp1s0.useDHCP = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -74,9 +74,15 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # Use Pipewire instead - one server to rule them all
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -100,6 +106,7 @@
 
   # Fonts -- Source Han is the best I've found.
   fonts.fonts = with pkgs; [
+    inconsolata
     source-han-code-jp
     source-han-sans-japanese
     source-han-serif-japanese
@@ -141,7 +148,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.03"; # Did you read the comment?
+  system.stateVersion = "21.05"; # Did you read the comment?
 
 }
 
